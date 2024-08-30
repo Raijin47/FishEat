@@ -9,7 +9,7 @@ public class BackgroundView : MonoBehaviour
     [SerializeField] private Sprite[] _imagesSkin;
 
 
-    private int _currentSprite;
+    public int _currentSprite = 3;
     public int CurrentSprite
     {
         get => _currentSprite;
@@ -26,12 +26,16 @@ public class BackgroundView : MonoBehaviour
     {
         CurrentSprite++;
         Apply();
+
+        Audio.Play(ClipType.changeSkin);
     }
 
     public void Preview()
     {
         CurrentSprite--;
         Apply();
+
+        Audio.Play(ClipType.changeSkin);
     }
 
     private void Apply()

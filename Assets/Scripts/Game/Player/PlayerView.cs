@@ -31,12 +31,16 @@ public class PlayerView : MonoBehaviour
     {
         CurrentSprite++;
         Apply();
+
+        Audio.Play(ClipType.changeSkin);
     }
 
     public void Preview()
     {
         CurrentSprite--;
         Apply();
+
+        Audio.Play(ClipType.changeSkin);
     }
 
     private void Apply()

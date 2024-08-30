@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2169747236346017100}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -127,8 +126,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 3
-  m_fontSizeBase: 3
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -198,6 +197,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7432669979572642131}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -206,7 +206,6 @@ Transform:
   - {fileID: 6441038330631163011}
   - {fileID: 6867121003241651172}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &723715122968796138
 SpriteRenderer:
@@ -317,6 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b22af17442c55b46891af4d4e0b3e12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deathPrefab: {fileID: 8846950036759875603, guid: d811a363babbb4d478a537b7c4f80f55, type: 3}
+  _bubleParticle: {fileID: 3985150110005744168}
 --- !u!1001 &1129252686214759906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378,6 +379,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e357ee8103811ce41bfc4d1cf8bd1602, type: 3}
+--- !u!198 &3985150110005744168 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4099948829522843594, guid: e357ee8103811ce41bfc4d1cf8bd1602, type: 3}
+  m_PrefabInstance: {fileID: 1129252686214759906}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6441038330631163011 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6253462940868839777, guid: e357ee8103811ce41bfc4d1cf8bd1602, type: 3}

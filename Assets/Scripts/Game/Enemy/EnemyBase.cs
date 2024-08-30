@@ -1,12 +1,13 @@
 using System;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
+    public ParticleSystem _bubleParticle;
     public event Action<EnemyBase> Die;
 
-    private SpriteRenderer _sprite;
+    public SpriteRenderer sprite;
     private BoxCollider2D _collider;
     private TextMeshPro _text;
 
@@ -24,17 +25,19 @@ public class EnemyBase : MonoBehaviour
 
     public void Init(EnemyData data)
     {
-        _sprite = GetComponent<SpriteRenderer>();
+        sprite = GetComponent<SpriteRenderer>();
         _collider = GetComponent<BoxCollider2D>();
         _text = GetComponentInChildren<TextMeshPro>();
         ResetData(data);
+
+        _bubleParticle.Play();
     }
     public void ResetData(EnemyData data)
     {
         _isRight = transform.position.x < 0;
-        _sprite.flipX = _isRight;
+        sprite.flipX = _isRight;
 
-        _sprite.sprite = data.Sprite;
+        sprite.sprite = data.Sprite;
         Health = data.Health;
         _collider.size = data.Size;
         _speed = data.Speed;
@@ -42,5 +45,9 @@ public class EnemyBase : MonoBehaviour
         _text.text = Health.ToString();
     }
 
-    public void Release() => Die?.Invoke(this);
+    public void Release()
+    {
+        _bubleParticle.Stop();
+        Die?.Invoke(this);
+    }
 }
