@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -18,10 +19,7 @@ public class EnemyBase : MonoBehaviour
     public int Health { get; private set; }
     public int Exp { get; private set; }
 
-    private void Update()
-    {
-        transform.position += _speed * Time.deltaTime * (_isRight ? Vector3.right : Vector3.left);
-    }
+    private Coroutine _updateMovementProcess;
 
     public void Init(EnemyData data)
     {
@@ -29,11 +27,12 @@ public class EnemyBase : MonoBehaviour
         _collider = GetComponent<BoxCollider2D>();
         _text = GetComponentInChildren<TextMeshPro>();
         ResetData(data);
-
-        _bubleParticle.Play();
     }
+
     public void ResetData(EnemyData data)
     {
+        _bubleParticle.Play();
+
         _isRight = transform.position.x < 0;
         sprite.flipX = _isRight;
 
@@ -43,11 +42,30 @@ public class EnemyBase : MonoBehaviour
         _speed = data.Speed;
         Exp = data.Exp;
         _text.text = Health.ToString();
+
+        if(_updateMovementProcess != null)
+        {
+            StopCoroutine(_updateMovementProcess);
+            _updateMovementProcess = null;
+        }
+        _updateMovementProcess = StartCoroutine(UpdateMovementProcess());
     }
 
     public void Release()
     {
         _bubleParticle.Stop();
         Die?.Invoke(this);
+
+        StopCoroutine(_updateMovementProcess);
+        _updateMovementProcess = null;
+    }
+
+    private IEnumerator UpdateMovementProcess()
+    {
+        while(true)
+        {
+            transform.position += _speed * Time.deltaTime * (_isRight ? Vector3.right : Vector3.left);
+            yield return null;
+        }
     }
 }

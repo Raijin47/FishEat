@@ -23,10 +23,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        //GameController.StartGame += StartGame;
+        GameController.StartGame += StartGame;
     }
 
-    private void Start()
+    private void StartGame()
     {
         Health = 5;
     }
@@ -44,15 +44,14 @@ public class PlayerHealth : MonoBehaviour
             {
                 if(!Bonuses.Spend(BonusType.Protection))
                 {
-                    Debug.Log("GameOver");
+                    GameController.GameOver?.Invoke();
                     Audio.Play(ClipType.gameOver);
                     UI.Instance.SetPage(0);
                 }
             }
             else
             {
-
-    Instantiate(_deathEnemyPrefab, transform.position + Vector3.down*1.2f, Quaternion.identity).flipX = enemy.sprite.flipX;
+                Instantiate(_deathEnemyPrefab, transform.position + Vector3.down*1.2f, Quaternion.identity).flipX = enemy.sprite.flipX;
                 Health += enemy.Exp;
                 enemy.Release();
                 _bite.Play("Bite Animation", 0, 0);

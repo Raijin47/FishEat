@@ -10,10 +10,15 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private EnemyData[] data;
 
     private readonly WaitForSeconds IntervalSpawn = new(1f);
+    private readonly WaitForSeconds IntervalComplexity = new(20f);
     private Camera _camera;
+    private int _currentComplexity;
 
     private EnemyProvider _enemyProvider;
     private PoolInstantiateObject<EnemyBase> _instantiateObject;
+
+    private Coroutine _spawnProcessCorotune;
+    private Coroutine _increaseComplexityCoroutine;
 
     private void Awake()
     {
@@ -23,8 +28,52 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        Init();        
-        StartCoroutine(SpawnProcessCoroutine());
+        _currentComplexity = 1;
+        Init();
+
+        if(_spawnProcessCorotune != null)
+        {
+            StopCoroutine(_spawnProcessCorotune);
+            _spawnProcessCorotune = null;
+        }
+        _spawnProcessCorotune = StartCoroutine(SpawnProcessCoroutine());
+    }
+
+    private void OnEnable()
+    {
+        GameController.StartGame += StartGame;
+        GameController.GameOver += GameOver;
+    }
+
+    private void StartGame()
+    {
+        if(_increaseComplexityCoroutine != null)
+        {
+            StopCoroutine(_increaseComplexityCoroutine);
+            _increaseComplexityCoroutine = null;
+        }
+        _increaseComplexityCoroutine = StartCoroutine(IncreaseComplexity());
+    }
+
+    private void GameOver()
+    {
+        if (_increaseComplexityCoroutine != null)
+        {
+            StopCoroutine(_increaseComplexityCoroutine);
+            _increaseComplexityCoroutine = null;
+        }
+
+        _currentComplexity = 1;
+    }
+
+    private IEnumerator IncreaseComplexity()
+    {
+        _currentComplexity = 1;
+        while(_currentComplexity != data.Length)
+        {
+            _currentComplexity++;
+            yield return IntervalComplexity;
+        }
     }
 
     private void Init()
@@ -44,7 +93,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Spawn(Vector2 position)
     {
-        int randomData = Random.Range(0, data.Length);
+        int randomData = Random.Range(0, _currentComplexity);
         _enemyProvider.CreateEnemy(position, data[randomData]);
     }
 
