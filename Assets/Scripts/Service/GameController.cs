@@ -7,4 +7,6 @@ public class GameController : MonoBehaviour
     public static Action GameOver;
 
     public void StartGameButton() => StartGame?.Invoke();
+
+    public void GameOverButton() => GameOver?.Invoke();
 }

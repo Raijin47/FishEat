@@ -9,14 +9,14 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private EnemyLocator _enemyLocator;
     [SerializeField] private EnemyData[] data;
 
-    private readonly WaitForSeconds IntervalSpawn = new(0.8f);
-    private readonly WaitForSeconds IntervalSpawnBonus = new(0.25f);
+    private readonly WaitForSeconds IntervalSpawn = new(0.9f);
+    private readonly WaitForSeconds IntervalSpawnBonus = new(0.23f);
     private readonly WaitForSeconds IntervalComplexity = new(20f);
     private Camera _camera;
     private int _currentComplexity;
 
     private EnemyProvider _enemyProvider;
-    private PoolInstantiateObject<EnemyBase> _instantiateObject;
+    public PoolInstantiateObject<EnemyBase> _instantiateObject;
 
     private Coroutine _spawnProcessCorotune;
     private Coroutine _increaseComplexityCoroutine;
@@ -56,6 +56,12 @@ public class EnemyManager : MonoBehaviour
             _increaseComplexityCoroutine = null;
         }
         _increaseComplexityCoroutine = StartCoroutine(IncreaseComplexity());
+        Clear();
+    }
+
+    private void Clear()
+    {
+        _instantiateObject.Clear();
     }
 
     private void GameOver()
