@@ -24,9 +24,15 @@ namespace Neoxider.UI
         private Vector2 _startPositions;
         private Coroutine _shakeCoroutine;
 
+
+        private void Awake()
+        {
+            _startPositions = _rectTransform.localPosition;
+        }
+
         private void OnEnable()
         {
-            _startPositions = _rectTransform.position;
+            _rectTransform.localPosition = _startPositions;
 
             if (_shakeOnStart)
             {
@@ -36,7 +42,7 @@ namespace Neoxider.UI
 
         private void OnDisable()
         {
-            _rectTransform.localPosition = _startPositions;
+            
         }
 
         public void OnPointerDown(PointerEventData eventData)
