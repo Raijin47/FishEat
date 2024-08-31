@@ -9,7 +9,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private EnemyLocator _enemyLocator;
     [SerializeField] private EnemyData[] data;
 
-    private readonly WaitForSeconds IntervalSpawn = new(1f);
+    private readonly WaitForSeconds IntervalSpawn = new(0.8f);
+    private readonly WaitForSeconds IntervalSpawnBonus = new(0.25f);
     private readonly WaitForSeconds IntervalComplexity = new(20f);
     private Camera _camera;
     private int _currentComplexity;
@@ -19,6 +20,8 @@ public class EnemyManager : MonoBehaviour
 
     private Coroutine _spawnProcessCorotune;
     private Coroutine _increaseComplexityCoroutine;
+
+    public bool isFishTraffic;
 
     private void Awake()
     {
@@ -31,7 +34,7 @@ public class EnemyManager : MonoBehaviour
         _currentComplexity = 1;
         Init();
 
-        if(_spawnProcessCorotune != null)
+        if (_spawnProcessCorotune != null)
         {
             StopCoroutine(_spawnProcessCorotune);
             _spawnProcessCorotune = null;
@@ -47,7 +50,7 @@ public class EnemyManager : MonoBehaviour
 
     private void StartGame()
     {
-        if(_increaseComplexityCoroutine != null)
+        if (_increaseComplexityCoroutine != null)
         {
             StopCoroutine(_increaseComplexityCoroutine);
             _increaseComplexityCoroutine = null;
@@ -69,7 +72,7 @@ public class EnemyManager : MonoBehaviour
     private IEnumerator IncreaseComplexity()
     {
         _currentComplexity = 1;
-        while(_currentComplexity != data.Length)
+        while (_currentComplexity != data.Length)
         {
             _currentComplexity++;
             yield return IntervalComplexity;
@@ -86,7 +89,7 @@ public class EnemyManager : MonoBehaviour
     {
         while (true)
         {
-            yield return IntervalSpawn;
+            yield return isFishTraffic ? IntervalSpawnBonus : IntervalSpawn;
             Spawn(GetSpawnPoint());
         }
     }
@@ -102,6 +105,20 @@ public class EnemyManager : MonoBehaviour
         Vector2 point = new(Random.value > 0.5f ? -0.2f : 1.2f, 0);
         point.y = Random.value;
 
-        return _camera.ViewportToWorldPoint(point); 
+        return _camera.ViewportToWorldPoint(point);
+    }
+
+    public void BonusFishTraffic(BonusType type)
+    {
+        if (type == BonusType.FishTraffic)
+        {
+            isFishTraffic = true;
+            Invoke(nameof(EndBoost), Bonuses.Instance.timeFishTraffic);
+        }
+    }
+
+    public void EndBoost()
+    {
+        isFishTraffic = false;
     }
 }

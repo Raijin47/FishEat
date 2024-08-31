@@ -8,6 +8,8 @@ public class PlayerCursor : MonoBehaviour
     private Transform _transform;
     public Vector3 Target => _transform.position;
 
+    public bool move;
+
     private void Start()
     {
         _camera = Camera.main;
@@ -17,10 +19,13 @@ public class PlayerCursor : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButton(0)) NewPosition();
+
+        if(Input.GetMouseButtonUp(0)) move = false;
     }
 
     private void NewPosition()
     {
+        move = true;
         _target = _camera.ScreenToWorldPoint(Input.mousePosition);
         _target.z = transform.position.z;
 

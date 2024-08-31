@@ -11,6 +11,12 @@ public class PlayerHealth : MonoBehaviour
     public Death _deathEnemyPrefab;
     public Vector3 offsefText;
 
+    public float minSize = 1;
+    public float maxSize = 3;
+
+    public int minHp = 5;
+    public int maxHpVisual = 500;
+
     public int Health
     {
         get => _health;
@@ -18,6 +24,19 @@ public class PlayerHealth : MonoBehaviour
         {
             _health = value;
             _text.text = _health.ToString();
+
+            SetScale();
+        }
+    }
+
+    private void SetScale()
+    {
+        if (maxHpVisual > 0)
+        {
+            float percent = (float)(_health - minHp) / (maxHpVisual - minHp);
+            float a = Mathf.Clamp(percent, 0, 1);
+            float size = Mathf.Lerp(minSize, maxSize, a);
+            transform.localScale = Vector3.one * size;
         }
     }
 
@@ -28,7 +47,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void StartGame()
     {
-        Health = 5;
+        Health = minHp;
     }
 
     private void Update()
@@ -44,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 if(!Bonuses.Spend(BonusType.Protection))
                 {
+                    Score.Save(Health);
                     GameController.GameOver?.Invoke();
                     Audio.Play(ClipType.gameOver);
                     UI.Instance.SetPage(0);
