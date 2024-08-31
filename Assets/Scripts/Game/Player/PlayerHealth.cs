@@ -63,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 if(!Bonuses.Spend(BonusType.Protection))
                 {
+                    Money.Instance.Add(Health);
                     Score.Save(Health);
                     GameController.GameOver?.Invoke();
                     Audio.Play(ClipType.gameOver);
