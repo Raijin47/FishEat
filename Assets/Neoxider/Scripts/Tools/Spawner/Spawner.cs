@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Neoxider
 {
@@ -69,12 +68,12 @@ namespace Neoxider
             GameObject prefabToSpawn = prefabs[randomIndex];
             GameObject spawnedObject;
 
-            Vector3 spawnPosition = transform.position; 
+            Vector3 spawnPosition = transform.position;
 
-            if(spawnAreaCollider != null)
-                spawnPosition  = GetRandomPointInCollider(spawnAreaCollider);
-            else if(spawnAreaCollider2D != null)
-                spawnPosition =GetRandomPointInCollider2D(spawnAreaCollider2D);
+            if (spawnAreaCollider != null)
+                spawnPosition = GetRandomPointInCollider(spawnAreaCollider);
+            else if (spawnAreaCollider2D != null)
+                spawnPosition = GetRandomPointInCollider2D(spawnAreaCollider2D);
 
             spawnedObject = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity, transform);
 
@@ -83,6 +82,9 @@ namespace Neoxider
 
         public void RemoveAllSpawnedObjects()
         {
+            isSpawning=  false;
+            print("Clear");
+
             foreach (GameObject obj in spawnedObjects)
             {
                 {
